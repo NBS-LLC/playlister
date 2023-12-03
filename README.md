@@ -2,7 +2,16 @@
 
 A command line app for retrieving extended playlist song details
 
-## Prerequisites
+## Installation
+
+Submodules are used, so be sure to:
+
+```shell
+> git clone --recurse-submodules https://github.com/NBS-LLC/playlister
+
+```
+
+## Configuration
 
 The following environment variables must be set:
 
@@ -23,4 +32,12 @@ The playlist_id is the last path parameter, for example: https://open.spotify.co
 
 ```shell
 > ./playlister.sh 2WagE1MGCatm33uHwfi5Hi
+```
+
+## Testing
+
+When contributing to the project automated tests can be executed:
+
+```shell
+> ./playlister_tests.sh
 ```
