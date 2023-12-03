@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      PLAYLISTER_SPOTIFY_CLIENT_ID: ${{ secrets.PLAYLISTER_SPOTIFY_CLIENT_ID }}
+      PLAYLISTER_SPOTIFY_CLIENT_SECRET: ${{ secrets.PLAYLISTER_SPOTIFY_CLIENT_SECRET }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Test
+        run: ./playlister_tests.bats
