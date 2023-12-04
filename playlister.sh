@@ -48,5 +48,6 @@ playlist_id="$1"
 client_id=$(get_env_var "PLAYLISTER_SPOTIFY_CLIENT_ID")
 client_secret=$(get_env_var "PLAYLISTER_SPOTIFY_CLIENT_SECRET")
 access_token=$(get_access_token $client_id $client_secret)
+playlist_data=$(get_playlist_data_by_id $access_token $playlist_id)
 
-get_playlist_data_by_id $access_token $playlist_id
+parse_tracks_from_playlist_data "$playlist_data"
