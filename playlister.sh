@@ -24,13 +24,19 @@ get_access_token() {
         -d "grant_type=client_credentials&client_id=${client_id}&client_secret=${client_secret}" | jq -r '.access_token'
 }
 
-get_playlist_by_id() {
+get_playlist_data_by_id() {
     local access_token=$1
     local playlist_id=$2
 
     curl -s --request GET \
         --url "https://api.spotify.com/v1/playlists/${playlist_id}" \
         --header "Authorization: Bearer ${access_token}" | jq '.'
+}
+
+parse_tracks_from_playlist_data() {
+    local playlist_data=$1
+
+    echo "$playlist_data" | jq -r '.tracks.items[].track.href'
 }
 
 ###############################################################################
@@ -42,5 +48,6 @@ playlist_id="$1"
 client_id=$(get_env_var "PLAYLISTER_SPOTIFY_CLIENT_ID")
 client_secret=$(get_env_var "PLAYLISTER_SPOTIFY_CLIENT_SECRET")
 access_token=$(get_access_token $client_id $client_secret)
+playlist_data=$(get_playlist_data_by_id $access_token $playlist_id)
 
-get_playlist_by_id $access_token $playlist_id
+parse_tracks_from_playlist_data "$playlist_data"

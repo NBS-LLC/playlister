@@ -21,4 +21,4 @@ jobs:
           submodules: recursive
 
       - name: Test
-        run: ./playlister_tests.bats
+        run: ./playlister_tests.sh
