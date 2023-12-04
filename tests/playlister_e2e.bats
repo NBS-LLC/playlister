@@ -1,7 +1,6 @@
 setup() {
     load '../vendor/bats-support/load'
     load '../vendor/bats-assert/load'
-    load '../playlister.sh'
 
     DIR="$( cd "$( dirname "$BATS_TEST_FILENAME" )" >/dev/null 2>&1 && pwd )"
     PATH="$DIR/../:$PATH"
