@@ -2,6 +2,12 @@
 
 A command line app for retrieving extended playlist song details
 
+## Prerequisites
+
+* bash
+* curl
+* jq
+
 ## Installation
 
 Submodules are used, so be sure to:
