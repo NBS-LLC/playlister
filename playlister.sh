@@ -33,6 +33,12 @@ get_playlist_by_id() {
         --header "Authorization: Bearer ${access_token}" | jq '.'
 }
 
+parse_tracks_from_playlist() {
+    local playlist_data=$1
+
+    echo "$playlist_data" | jq -r '.tracks.items[].track.href'
+}
+
 ###############################################################################
 ### MAIN
 ###############################################################################
