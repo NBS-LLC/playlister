@@ -33,10 +33,10 @@ get_playlist_data_by_id() {
         --header "Authorization: Bearer ${access_token}" | jq '.'
 }
 
-parse_tracks_from_playlist_data() {
+parse_track_ids_from_playlist_data() {
     local playlist_data=$1
 
-    echo "$playlist_data" | jq -r '.tracks.items[].track.href'
+    echo "$playlist_data" | jq -r '.tracks.items[].track.id'
 }
 
 ###############################################################################
@@ -50,4 +50,4 @@ client_secret=$(get_env_var "PLAYLISTER_SPOTIFY_CLIENT_SECRET")
 access_token=$(get_access_token $client_id $client_secret)
 playlist_data=$(get_playlist_data_by_id $access_token $playlist_id)
 
-parse_tracks_from_playlist_data "$playlist_data"
+parse_track_ids_from_playlist_data "$playlist_data"
