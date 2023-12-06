@@ -50,6 +50,12 @@ get_multiple_track_audio_features() {
         echo "Error: Processing more than 100 tracks is not supported." >&2
         exit 1
     fi
+
+    local track_ids=$(parse_track_ids_as_csv "$tracks") || exit $?
+
+    curl -s --request GET \
+        --url "https://api.spotify.com/v1/audio-features?ids=${track_ids}" \
+        --header "Authorization: Bearer ${access_token}" | jq '.audio_features'
 }
 
 ###############################################################################
@@ -62,5 +68,6 @@ client_id=$(get_env_var "PLAYLISTER_SPOTIFY_CLIENT_ID") || exit $?
 client_secret=$(get_env_var "PLAYLISTER_SPOTIFY_CLIENT_SECRET") || exit $?
 access_token=$(get_access_token $client_id $client_secret) || exit $?
 playlist_data=$(get_playlist_data_by_id $access_token $playlist_id) || exit $?
+tracks=$(parse_tracks_from_playlist_data "$playlist_data") || exit $?
 
-parse_tracks_from_playlist_data "$playlist_data"
+get_multiple_track_audio_features "$access_token" "$tracks"

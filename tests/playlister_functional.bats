@@ -35,11 +35,11 @@ setup() {
 }
 
 @test "should parse track ids into csv" {
-    tracks='[{"name": "track 1", "id": "001"},{"name": "track 2", "id": "002"},{"name": "track 3", "id": "333"}]'
+    tracks='[{"name": "Opa Gäärd", "id": "1eb0mORiTlz0OLkH0NPb9Z"},{"name": "Moonlight", "id": "1nvHCuiZ0qErIJHnIiEZgA"},{"name": "Togetherness", "id": "7biflzjN8c8v5mPuh71lXB"}]'
 
     run parse_track_ids_as_csv "$tracks"
     assert_success
-    assert_output "001,002,333"
+    assert_output "1eb0mORiTlz0OLkH0NPb9Z,1nvHCuiZ0qErIJHnIiEZgA,7biflzjN8c8v5mPuh71lXB"
 }
 
 @test "should error if track length is greater than 100" {
@@ -49,4 +49,19 @@ setup() {
 
     run get_multiple_track_audio_features "mock_access_token" "$large_track_list"
     assert_failure
+}
+
+@test "should get multiple track audio features" {
+    client_id=$PLAYLISTER_SPOTIFY_CLIENT_ID
+    client_secret=$PLAYLISTER_SPOTIFY_CLIENT_SECRET
+    access_token=$(get_access_token "$client_id" "$client_secret")
+    tracks='[{"name": "Opa Gäärd", "id": "1eb0mORiTlz0OLkH0NPb9Z"},{"name": "Moonlight", "id": "1nvHCuiZ0qErIJHnIiEZgA"},{"name": "Togetherness", "id": "7biflzjN8c8v5mPuh71lXB"}]'
+
+    run get_multiple_track_audio_features "$access_token" "$tracks"
+    assert_success
+    assert_equal "$(echo "$output" | jq length)" "3"
+
+    assert_equal "$(echo "$output" | jq -r '.[0].tempo')" "99.98"
+    assert_equal "$(echo "$output" | jq -r '.[1].tempo')" "129.005"
+    assert_equal "$(echo "$output" | jq -r '.[2].tempo')" "126.021"
 }
