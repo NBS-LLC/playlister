@@ -35,7 +35,7 @@ setup() {
 }
 
 @test "should parse track ids into csv" {
-    tracks='[{"name": "Opa Gäärd", "id": "1eb0mORiTlz0OLkH0NPb9Z"},{"name": "Moonlight", "id": "1nvHCuiZ0qErIJHnIiEZgA"},{"name": "Togetherness", "id": "7biflzjN8c8v5mPuh71lXB"}]'
+    tracks=$(cat tests/tracks_test_data.json)
 
     run parse_track_ids_as_csv "$tracks"
     assert_success
@@ -55,7 +55,7 @@ setup() {
     client_id=$PLAYLISTER_SPOTIFY_CLIENT_ID
     client_secret=$PLAYLISTER_SPOTIFY_CLIENT_SECRET
     access_token=$(get_access_token "$client_id" "$client_secret")
-    tracks='[{"name": "Opa Gäärd", "id": "1eb0mORiTlz0OLkH0NPb9Z"},{"name": "Moonlight", "id": "1nvHCuiZ0qErIJHnIiEZgA"},{"name": "Togetherness", "id": "7biflzjN8c8v5mPuh71lXB"}]'
+    tracks=$(cat tests/tracks_test_data.json)
 
     run get_multiple_track_audio_features "$access_token" "$tracks"
     assert_success
