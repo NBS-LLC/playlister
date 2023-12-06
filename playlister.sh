@@ -36,6 +36,12 @@ parse_tracks_from_playlist_data() {
     echo "$playlist_data" | jq '.tracks.items[].track | { "name": .name, "id": .id }' | jq -s '.'
 }
 
+parse_track_ids_as_csv() {
+    local tracks=$1
+
+    echo "$tracks" | jq '.[].id' | jq -r -s 'join(",")'
+}
+
 get_multiple_track_audio_features() {
     local access_token=$1
     local tracks=$2

@@ -34,7 +34,14 @@ setup() {
     assert_equal "$(echo "$output" | jq -r '.[47].id')" "7biflzjN8c8v5mPuh71lXB"
 }
 
-# bats test_tags=bats:focus
+@test "should parse track ids into csv" {
+    tracks='[{"name": "track 1", "id": "001"},{"name": "track 2", "id": "002"},{"name": "track 3", "id": "333"}]'
+
+    run parse_track_ids_as_csv "$tracks"
+    assert_success
+    assert_output "001,002,333"
+}
+
 @test "should error if track length is greater than 100" {
     playlist_data=$(cat tests/playlist_test_data.json)
     tracks=$(parse_tracks_from_playlist_data "$playlist_data")
