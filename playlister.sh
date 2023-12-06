@@ -39,6 +39,16 @@ parse_tracks_from_playlist_data() {
     echo "$playlist_data" | jq '.tracks.items[].track | { "name": .name, "id": .id }' | jq -s '.'
 }
 
+get_multiple_track_audio_features() {
+    local access_token=$1
+    local tracks=$2
+
+    if [[ $(echo "$tracks" | jq length) -gt 100 ]]; then
+        echo "Error: Processing more than 100 tracks is not supported." >&2
+        exit 1
+    fi
+}
+
 ###############################################################################
 ### MAIN
 ###############################################################################

@@ -33,3 +33,13 @@ setup() {
     assert_equal "$(echo "$output" | jq -r '.[47].name')" "Togetherness"
     assert_equal "$(echo "$output" | jq -r '.[47].id')" "7biflzjN8c8v5mPuh71lXB"
 }
+
+# bats test_tags=bats:focus
+@test "should error if track length is greater than 100" {
+    playlist_data=$(cat tests/playlist_test_data.json)
+    tracks=$(parse_tracks_from_playlist_data "$playlist_data")
+    large_track_list=$(echo "$tracks $tracks $tracks" | jq -s 'add')
+
+    run get_multiple_track_audio_features "mock_access_token" "$large_track_list"
+    assert_failure
+}
