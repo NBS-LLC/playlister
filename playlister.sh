@@ -36,7 +36,7 @@ get_playlist_data_by_id() {
 parse_track_ids_from_playlist_data() {
     local playlist_data=$1
 
-    echo "$playlist_data" | jq -r '.tracks.items[].track.id'
+    echo "$playlist_data" | jq '.tracks.items[].track | { "name": .name, "id": .id }' | jq -s '.'
 }
 
 ###############################################################################
