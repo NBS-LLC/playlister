@@ -67,6 +67,7 @@ setup() {
 }
 
 @test "should combine tracks and audio features" {
+    # TODO: Ensure test data is not sorted by id.
     tracks=$(cat tests/tracks_test_data.json)
     audio_features=$(cat tests/audio_features_test_data.json)
 
