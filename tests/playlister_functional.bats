@@ -24,14 +24,17 @@ setup() {
     assert_success
     assert_equal "$(echo "$output" | jq length)" "48"
     
-    assert_equal "$(echo "$output" | jq -r '.[0].name')" "Opa Gäärd"
+    assert_equal "$(echo "$output" | jq -r '.[0].added_at')" "2023-02-01T02:35:30Z"
     assert_equal "$(echo "$output" | jq -r '.[0].id')" "1eb0mORiTlz0OLkH0NPb9Z"
+    assert_equal "$(echo "$output" | jq -r '.[0].name')" "Opa Gäärd"
 
-    assert_equal "$(echo "$output" | jq -r '.[22].name')" "Moonlight"
+    assert_equal "$(echo "$output" | jq -r '.[22].added_at')" "2023-04-02T17:00:08Z"
     assert_equal "$(echo "$output" | jq -r '.[22].id')" "1nvHCuiZ0qErIJHnIiEZgA"
+    assert_equal "$(echo "$output" | jq -r '.[22].name')" "Moonlight"
 
-    assert_equal "$(echo "$output" | jq -r '.[47].name')" "Togetherness"
+    assert_equal "$(echo "$output" | jq -r '.[47].added_at')" "2023-11-21T03:25:43Z"
     assert_equal "$(echo "$output" | jq -r '.[47].id')" "7biflzjN8c8v5mPuh71lXB"
+    assert_equal "$(echo "$output" | jq -r '.[47].name')" "Togetherness"
 }
 
 @test "should parse track ids into csv" {
