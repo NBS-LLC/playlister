@@ -39,7 +39,7 @@ parse_tracks_from_playlist_data() {
 parse_track_ids_as_csv() {
     local tracks=$1
 
-    echo "$tracks" | jq '.[].id' | jq -r -s 'join(",")'
+    echo "$tracks" | jq 'sort_by(.added_at) | .[].id' | jq -r -s 'join(",")'
 }
 
 get_multiple_track_audio_features() {
@@ -62,9 +62,7 @@ combine_tracks_and_audio_features() {
     local tracks=$1
     local audio_features=$2
 
-    # TODO: Keep the original track order.
-
-    echo $tracks $audio_features | jq -s 'add | group_by(.id) | map(add)'
+    echo $tracks $audio_features | jq -s 'add | group_by(.id) | map(add) | sort_by(.added_at)'
 }
 
 ###############################################################################
