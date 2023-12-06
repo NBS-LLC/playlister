@@ -39,7 +39,7 @@ parse_tracks_from_playlist_data() {
 parse_track_ids_as_csv() {
     local tracks=$1
 
-    echo "$tracks" | jq '.[].id' | jq -r -s 'join(",")'
+    echo "$tracks" | jq 'sort_by(.added_at) | .[].id' | jq -r -s 'join(",")'
 }
 
 get_multiple_track_audio_features() {
@@ -58,6 +58,13 @@ get_multiple_track_audio_features() {
         --header "Authorization: Bearer ${access_token}" | jq '.audio_features'
 }
 
+combine_tracks_and_audio_features() {
+    local tracks=$1
+    local audio_features=$2
+
+    echo $tracks $audio_features | jq -s 'add | group_by(.id) | map(add) | sort_by(.added_at)'
+}
+
 ###############################################################################
 ### MAIN
 ###############################################################################
@@ -69,5 +76,6 @@ client_secret=$(get_env_var "PLAYLISTER_SPOTIFY_CLIENT_SECRET") || exit $?
 access_token=$(get_access_token $client_id $client_secret) || exit $?
 playlist_data=$(get_playlist_data_by_id $access_token $playlist_id) || exit $?
 tracks=$(parse_tracks_from_playlist_data "$playlist_data") || exit $?
+audio_features=$(get_multiple_track_audio_features "$access_token" "$tracks") || exit $?
 
-get_multiple_track_audio_features "$access_token" "$tracks"
+combine_tracks_and_audio_features "$tracks" "$audio_features"
