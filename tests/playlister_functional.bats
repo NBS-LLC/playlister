@@ -22,8 +22,14 @@ setup() {
     
     run parse_track_ids_from_playlist_data "$playlist_data"
     assert_success
-    assert [ $(echo "$output" | wc -l) -eq 48 ]
-    assert_line --index 0 '1eb0mORiTlz0OLkH0NPb9Z'
-    assert_line --index 22 '1nvHCuiZ0qErIJHnIiEZgA'
-    assert_line --index 47 '7biflzjN8c8v5mPuh71lXB'
+    assert_equal "$(echo "$output" | jq length)" "48"
+    
+    assert_equal "$(echo "$output" | jq -r '.[0].name')" "Opa Gäärd"
+    assert_equal "$(echo "$output" | jq -r '.[0].id')" "1eb0mORiTlz0OLkH0NPb9Z"
+
+    assert_equal "$(echo "$output" | jq -r '.[22].name')" "Moonlight"
+    assert_equal "$(echo "$output" | jq -r '.[22].id')" "1nvHCuiZ0qErIJHnIiEZgA"
+
+    assert_equal "$(echo "$output" | jq -r '.[47].name')" "Togetherness"
+    assert_equal "$(echo "$output" | jq -r '.[47].id')" "7biflzjN8c8v5mPuh71lXB"
 }
