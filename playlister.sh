@@ -1,15 +1,12 @@
 #!/usr/bin/env bash
 
-trap "exit 1" TERM
-export SCRIPT_PID=$$
-
 get_env_var() {
     local var_name=$1
     local var_value=${!var_name}
 
     if [[ -z "${var_value}" ]]; then
         echo "Error: Environment variable '${var_name}' is not set." >&2
-        kill -s TERM $SCRIPT_PID
+        exit 1
     else
         echo "${var_value}"
     fi
@@ -45,9 +42,9 @@ parse_tracks_from_playlist_data() {
 
 playlist_id="$1"
 
-client_id=$(get_env_var "PLAYLISTER_SPOTIFY_CLIENT_ID")
-client_secret=$(get_env_var "PLAYLISTER_SPOTIFY_CLIENT_SECRET")
-access_token=$(get_access_token $client_id $client_secret)
-playlist_data=$(get_playlist_data_by_id $access_token $playlist_id)
+client_id=$(get_env_var "PLAYLISTER_SPOTIFY_CLIENT_ID") || exit $?
+client_secret=$(get_env_var "PLAYLISTER_SPOTIFY_CLIENT_SECRET") || exit $?
+access_token=$(get_access_token $client_id $client_secret) || exit $?
+playlist_data=$(get_playlist_data_by_id $access_token $playlist_id) || exit $?
 
 parse_tracks_from_playlist_data "$playlist_data"
