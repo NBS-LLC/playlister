@@ -58,6 +58,13 @@ get_multiple_track_audio_features() {
         --header "Authorization: Bearer ${access_token}" | jq '.audio_features'
 }
 
+combine_tracks_and_audio_features() {
+    local tracks=$1
+    local audio_features=$2
+
+    echo $tracks $audio_features | jq -s 'add | group_by(.id) | map(add)'
+}
+
 ###############################################################################
 ### MAIN
 ###############################################################################

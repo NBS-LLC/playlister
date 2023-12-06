@@ -65,3 +65,24 @@ setup() {
     assert_equal "$(echo "$output" | jq -r '.[1].tempo')" "129.005"
     assert_equal "$(echo "$output" | jq -r '.[2].tempo')" "126.021"
 }
+
+@test "should combine tracks and audio features" {
+    tracks=$(cat tests/tracks_test_data.json)
+    audio_features=$(cat tests/audio_features_test_data.json)
+
+    run combine_tracks_and_audio_features "$tracks" "$audio_features"
+    assert_success
+    assert_equal "$(echo "$output" | jq length)" "3"
+
+    assert_equal "$(echo "$output" | jq -r '.[0].id')" "1eb0mORiTlz0OLkH0NPb9Z"
+    assert_equal "$(echo "$output" | jq -r '.[0].name')" "Opa Gäärd"
+    assert_equal "$(echo "$output" | jq -r '.[0].tempo')" "99.98"
+
+    assert_equal "$(echo "$output" | jq -r '.[1].id')" "1nvHCuiZ0qErIJHnIiEZgA"
+    assert_equal "$(echo "$output" | jq -r '.[1].name')" "Moonlight"
+    assert_equal "$(echo "$output" | jq -r '.[1].tempo')" "129.005"
+
+    assert_equal "$(echo "$output" | jq -r '.[2].id')" "7biflzjN8c8v5mPuh71lXB"
+    assert_equal "$(echo "$output" | jq -r '.[2].name')" "Togetherness"
+    assert_equal "$(echo "$output" | jq -r '.[2].tempo')" "126.021"
+}
