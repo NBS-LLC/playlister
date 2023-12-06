@@ -17,10 +17,10 @@ setup() {
     assert_output --partial '"uri": "spotify:playlist:2WagE1MGCatm33uHwfi5Hi"'
 }
 
-@test "should parse track ids from playlist data" {
+@test "should parse tracks from playlist data" {
     playlist_data=$(cat tests/playlist_test_data.json)
     
-    run parse_track_ids_from_playlist_data "$playlist_data"
+    run parse_tracks_from_playlist_data "$playlist_data"
     assert_success
     assert_equal "$(echo "$output" | jq length)" "48"
     
