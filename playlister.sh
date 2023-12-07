@@ -71,6 +71,12 @@ simplify() {
     echo $combined | jq 'del(.[]["type", "uri", "track_href", "analysis_url"])'
 }
 
+to_csv() {
+    local combined=$1
+
+    echo $combined | jq -r '(map(keys) | add | unique) as $cols | map(. as $row | $cols | map($row[.])) as $rows | $cols, $rows[] | @csv'
+}
+
 ###############################################################################
 ### MAIN
 ###############################################################################
@@ -84,5 +90,6 @@ playlist_data=$(get_playlist_data_by_id $access_token $playlist_id) || exit $?
 tracks=$(parse_tracks_from_playlist_data "$playlist_data") || exit $?
 audio_features=$(get_multiple_track_audio_features "$access_token" "$tracks") || exit $?
 combined=$(combine_tracks_and_audio_features "$tracks" "$audio_features") || exit $?
+simplified=$(simplify "$combined") || exit $?
 
-simplify "$combined"
+# to_csv "$simplified"
