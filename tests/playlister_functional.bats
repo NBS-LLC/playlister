@@ -102,3 +102,32 @@ setup() {
     assert_equal "$(echo "$output" | jq -r '.[3].tempo')" "126.021"
     assert_equal "$(echo "$output" | jq -r '.[3].uri')" "spotify:track:7biflzjN8c8v5mPuh71lXB"
 }
+
+@test "should simplify by removing unncessary fields" {
+    tracks=$(cat tests/tracks_test_data.json)
+    audio_features=$(cat tests/audio_features_test_data.json)
+    combined=$(combine_tracks_and_audio_features "$tracks" "$audio_features")
+
+    run simplify "$combined"
+    assert_success
+    assert_equal "$(echo "$output" | jq length)" "4"
+
+    refute_output --partial '"type":'
+    refute_output --partial '"uri":'
+    refute_output --partial '"track_href":'
+    refute_output --partial '"analysis_url":'
+
+    # Ensure other fields and order are left alone.
+
+    assert_equal "$(echo "$output" | jq -r '.[0].name')" "Opa Gäärd"
+    assert_equal "$(echo "$output" | jq -r '.[0].tempo')" "99.98"
+
+    assert_equal "$(echo "$output" | jq -r '.[1].name')" "Infinite Gratitude"
+    assert_equal "$(echo "$output" | jq -r '.[1].tempo')" "139.97"
+
+    assert_equal "$(echo "$output" | jq -r '.[2].name')" "Moonlight"
+    assert_equal "$(echo "$output" | jq -r '.[2].tempo')" "129.005"
+
+    assert_equal "$(echo "$output" | jq -r '.[3].name')" "Togetherness"
+    assert_equal "$(echo "$output" | jq -r '.[3].tempo')" "126.021"
+}

@@ -65,6 +65,12 @@ combine_tracks_and_audio_features() {
     echo $tracks $audio_features | jq -s 'add | group_by(.id) | map(add) | sort_by(.added_at)'
 }
 
+simplify() {
+    local combined=$1
+
+    echo $combined | jq 'del(.[]["type", "uri", "track_href", "analysis_url"])'
+}
+
 ###############################################################################
 ### MAIN
 ###############################################################################
@@ -77,5 +83,6 @@ access_token=$(get_access_token $client_id $client_secret) || exit $?
 playlist_data=$(get_playlist_data_by_id $access_token $playlist_id) || exit $?
 tracks=$(parse_tracks_from_playlist_data "$playlist_data") || exit $?
 audio_features=$(get_multiple_track_audio_features "$access_token" "$tracks") || exit $?
+combined=$(combine_tracks_and_audio_features "$tracks" "$audio_features") || exit $?
 
-combine_tracks_and_audio_features "$tracks" "$audio_features"
+simplify "$combined"
