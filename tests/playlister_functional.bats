@@ -82,19 +82,23 @@ setup() {
     assert_equal "$(echo "$output" | jq -r '.[0].id')" "1eb0mORiTlz0OLkH0NPb9Z"
     assert_equal "$(echo "$output" | jq -r '.[0].name')" "Opa Gäärd"
     assert_equal "$(echo "$output" | jq -r '.[0].tempo')" "99.98"
+    assert_equal "$(echo "$output" | jq -r '.[0].uri')" "spotify:track:1eb0mORiTlz0OLkH0NPb9Z"
 
     assert_equal "$(echo "$output" | jq -r '.[1].added_at')" "2023-02-21T07:09:50Z"
     assert_equal "$(echo "$output" | jq -r '.[1].id')" "0FFF1jhCgjVeazeorTOqcl"
     assert_equal "$(echo "$output" | jq -r '.[1].name')" "Infinite Gratitude"
     assert_equal "$(echo "$output" | jq -r '.[1].tempo')" "139.97"
+    assert_equal "$(echo "$output" | jq -r '.[1].uri')" "spotify:track:0FFF1jhCgjVeazeorTOqcl"
 
     assert_equal "$(echo "$output" | jq -r '.[2].added_at')" "2023-04-02T17:00:08Z"
     assert_equal "$(echo "$output" | jq -r '.[2].id')" "1nvHCuiZ0qErIJHnIiEZgA"
     assert_equal "$(echo "$output" | jq -r '.[2].name')" "Moonlight"
     assert_equal "$(echo "$output" | jq -r '.[2].tempo')" "129.005"
+    assert_equal "$(echo "$output" | jq -r '.[2].uri')" "spotify:track:1nvHCuiZ0qErIJHnIiEZgA"
 
     assert_equal "$(echo "$output" | jq -r '.[3].added_at')" "2023-11-21T03:25:43Z"
     assert_equal "$(echo "$output" | jq -r '.[3].id')" "7biflzjN8c8v5mPuh71lXB"
     assert_equal "$(echo "$output" | jq -r '.[3].name')" "Togetherness"
     assert_equal "$(echo "$output" | jq -r '.[3].tempo')" "126.021"
+    assert_equal "$(echo "$output" | jq -r '.[3].uri')" "spotify:track:7biflzjN8c8v5mPuh71lXB"
 }
