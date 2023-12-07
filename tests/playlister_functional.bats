@@ -1,7 +1,7 @@
 setup() {
     load '../vendor/bats-support/load'
     load '../vendor/bats-assert/load'
-    load '../playlister.sh'
+    load '../playlister_lib.sh'
 
     DIR="$( cd "$( dirname "$BATS_TEST_FILENAME" )" >/dev/null 2>&1 && pwd )"
     PATH="$DIR/../:$PATH"
@@ -130,4 +130,21 @@ setup() {
 
     assert_equal "$(echo "$output" | jq -r '.[3].name')" "Togetherness"
     assert_equal "$(echo "$output" | jq -r '.[3].tempo')" "126.021"
+}
+
+@test "should convert to csv" {
+    tracks=$(cat tests/tracks_test_data.json)
+    audio_features=$(cat tests/audio_features_test_data.json)
+    combined=$(combine_tracks_and_audio_features "$tracks" "$audio_features")
+
+    run to_csv "$combined"
+
+    assert_success
+    assert_equal "$(echo "$output" | wc -l)" "5"
+
+    assert_line --index 0 --regexp '^"acousticness",.*,"valence"$'
+    assert_line --index 1 --regexp '^0\.434,.*,0\.352$'
+    assert_line --index 2 --regexp '^0\.388,.*,0\.273$'
+    assert_line --index 3 --regexp '^0\.00328,.*,0\.0539$'
+    assert_line --index 4 --regexp '^0\.00355,.*,0\.774$'
 }
