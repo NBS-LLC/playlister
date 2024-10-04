@@ -15,6 +15,9 @@ jobs:
       PLAYLISTER_SPOTIFY_CLIENT_SECRET: ${{ secrets.PLAYLISTER_SPOTIFY_CLIENT_SECRET }}
 
     steps:
+      - name: Install JQ
+        run: brew install jq@1.7.1
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
