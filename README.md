@@ -23,10 +23,8 @@ For example:
 
 ## Installation
 
-Submodules are used, so be sure to:
-
 ```shell
-> git clone --recurse-submodules https://github.com/NBS-LLC/playlister
+> git clone https://github.com/NBS-LLC/playlister
 
 ```
 
