@@ -64,8 +64,8 @@ setup() {
     assert_success
     assert_equal "$(echo "$output" | jq length)" "4"
 
-    assert_equal "$(echo "$output" | jq -r '.[0].tempo')" "99.98"
-    assert_equal "$(echo "$output" | jq -r '.[1].tempo')" "139.97"
+    assert_equal "$(echo "$output" | jq -r '.[0].tempo')" "99.980"
+    assert_equal "$(echo "$output" | jq -r '.[1].tempo')" "139.970"
     assert_equal "$(echo "$output" | jq -r '.[2].tempo')" "129.005"
     assert_equal "$(echo "$output" | jq -r '.[3].tempo')" "126.021"
 }
@@ -140,7 +140,7 @@ setup() {
     run to_csv "$combined"
 
     assert_success
-    assert_equal "$(echo "$output" | wc -l)" "5"
+    assert_equal "$(echo "$output" | wc -l | xargs)" "5"
 
     assert_line --index 0 --regexp '^"acousticness",.*,"valence"$'
     assert_line --index 1 --regexp '^0\.434,.*,0\.352$'
