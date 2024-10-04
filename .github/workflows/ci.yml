@@ -8,18 +8,13 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     env:
       PLAYLISTER_SPOTIFY_CLIENT_ID: ${{ secrets.PLAYLISTER_SPOTIFY_CLIENT_ID }}
       PLAYLISTER_SPOTIFY_CLIENT_SECRET: ${{ secrets.PLAYLISTER_SPOTIFY_CLIENT_SECRET }}
 
     steps:
-      - name: Install JQ
-        run: |
-          sudo apt update
-          sudo apt-get install jq=1.7.1-3build1
-
       - name: Checkout
         uses: actions/checkout@v4
         with:
