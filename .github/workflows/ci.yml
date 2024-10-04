@@ -20,5 +20,8 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Install
+        run: npm ci
+
       - name: Test
-        run: ./playlister_tests.sh
+        run: npm run test
