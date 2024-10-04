@@ -17,15 +17,14 @@ For example:
 
 ## Prerequisites
 
-* bash
-* curl
-* jq
+- bash
+- curl
+- jq 1.7.1
 
 ## Installation
 
 ```shell
 > git clone https://github.com/NBS-LLC/playlister
-
 ```
 
 ## Configuration
@@ -56,5 +55,6 @@ The playlist_id is the last path parameter, for example: https://open.spotify.co
 When contributing to the project automated tests can be executed:
 
 ```shell
-> ./playlister_tests.sh
+> npm install
+> npm run test
 ```
