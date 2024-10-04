@@ -16,7 +16,9 @@ jobs:
 
     steps:
       - name: Install JQ
-        run: brew install jq@1.7.1
+        run: |
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          brew install jq@1.7.1
 
       - name: Checkout
         uses: actions/checkout@v4
